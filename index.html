@@ -1,523 +1,298 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SkyRoot Technologies — Transforming aerial data into instantly actionable insights</title>
-  <meta name="description" content="SkyRoot Technologies — Drone surveys & mapping (mining, agri, forestry, infrastructure, utilities, disaster risk management)." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg: #f7fbff;            /* simple plain background */
-      --card: #ffffff;
-      --muted: #6b7280;
-      --accent-1: #0b6fbf;
-      --accent-2: #43c0ff;
-      --accent-grad: linear-gradient(90deg,var(--accent-1),var(--accent-2));
-      --glass: rgba(11,111,191,0.06);
-      --max-width: 1200px;
-      --soft-shadow: 0 8px 24px rgba(11,63,110,0.06);
-      --strong-shadow: 0 26px 60px rgba(11,63,110,0.10);
-      --radius: 14px;
-
-      /* responsive type */
-      --h1: clamp(28px, 4vw, 44px);
-      --lead: clamp(14px, 1.6vw, 16.5px);
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      /* plain single-color background as requested */
-      background: var(--bg);
-      color:#03102a;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-      overflow-x:hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* container */
-    .container{max-width:var(--max-width);margin:0 auto;padding:24px;position:relative;z-index:2}
-
-    /* HEADER */
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:12px}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;background:linear-gradient(135deg,var(--accent-2),var(--accent-1));box-shadow:0 10px 30px rgba(67,192,255,0.12)}
-    .brand h1{font-size:16px;margin:0;color:var(--accent-1)}
-    /* nav (desktop) */
-    .nav-links{display:flex;align-items:center;gap:6px}
-    nav a{color:var(--muted);text-decoration:none;margin-left:12px;font-weight:700;padding:8px;border-radius:8px;font-size:14px}
-    nav a:hover{color:#03102a;background:var(--glass);box-shadow:var(--soft-shadow)}
-
-    /* mobile nav toggle */
-    .nav-toggle{display:none;background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer}
-    .nav-toggle svg{width:20px;height:20px;display:block}
-
-    /* HERO */
-    .hero{display:grid;grid-template-columns:1fr 480px;gap:28px;align-items:center;padding:56px 0}
-    .kicker{display:inline-block;background:linear-gradient(90deg, rgba(67,192,255,0.12), rgba(11,111,191,0.06));padding:8px 12px;border-radius:999px;color:var(--accent-1);font-weight:800;font-size:13px}
-    h2{font-size:var(--h1);margin:16px 0 12px;color:#03102a;line-height:1.02;letter-spacing:-0.4px}
-    p.lead{color:var(--muted);font-size:var(--lead)}
-    .cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
-
-    .btn{padding:12px 18px;border-radius:12px;border:0;font-weight:800;cursor:pointer;letter-spacing:0.4px}
-    .btn-primary{background:var(--accent-grad);color:white;box-shadow:0 10px 30px rgba(11,111,191,0.10)}
-    .btn-primary:hover{box-shadow:0 22px 50px rgba(11,111,191,0.16)}
-    .btn-ghost{background:transparent;border:1px solid rgba(3,16,42,0.04);color:var(--accent-1)}
-    .btn-ghost:hover{box-shadow:0 16px 36px rgba(11,111,191,0.08);background:rgba(11,111,191,0.03)}
-
-    /* hero card + slider: slides now include an <img> behind content */
-    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.96), #ffffff);padding:18px;border-radius:14px;box-shadow:var(--soft-shadow);border:1px solid rgba(11,63,110,0.03)}
-    .hero-slider{height:320px;border-radius:12px;overflow:hidden;position:relative;border:1px solid rgba(3,16,42,0.04)}
-    .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:20px;transition:opacity .5s ease,transform .5s cubic-bezier(.2,.9,.2,1)}
-    .slide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.12;z-index:0}
-    .slide .content{position:relative;z-index:2;max-width:85%}
-    .slide .tag{background:rgba(255,255,255,0.98);padding:8px 12px;border-radius:10px;color:var(--accent-1);font-weight:800}
-    .slide h3{margin:12px 0 6px;font-size:18px;color:#03102a}
-    .slide p{color:var(--muted);margin-bottom:8px}
-    .slider-dots{position:absolute;left:14px;bottom:12px;display:flex;gap:8px}
-    .dot{width:10px;height:10px;border-radius:50%;background:rgba(3,16,42,0.06);border:1px solid rgba(3,16,42,0.04)}
-    .dot.active{background:var(--accent-2);box-shadow:0 8px 20px rgba(67,192,255,0.12)}
-
-    /* QUICK STATS */
-    .quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;align-items:stretch}
-    .stat-mini{background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,250,255,0.96));padding:12px;border-radius:10px;border:1px solid rgba(3,16,42,0.04);box-shadow:0 8px 18px rgba(11,63,110,0.03);display:flex;flex-direction:column}
-    .stat-mini .s-value{font-weight:800;font-size:18px;color:var(--accent-1)}
-    .stat-mini .s-label{color:var(--muted);font-size:13px;margin-top:6px}
-
-    /* SECTIONS: added clear separation (subtle divider) */
-    section{padding:44px 0;border-bottom:1px solid rgba(3,16,42,0.04)}
-    .grid{display:grid;gap:16px}
-    .services-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-
-    /* SERVICE CARDS */
-    .service-card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,250,255,0.98));
-      padding:18px;border-radius:12px;border:1px solid transparent;box-shadow:0 8px 24px rgba(11,63,110,0.04);position:relative;overflow:hidden;cursor:pointer;min-height:110px;
-      display:flex;align-items:flex-start;
-    }
-    .service-card:before{
-      content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius) + 2px);background:linear-gradient(90deg, rgba(11,111,191,0.10), rgba(67,192,255,0.10));filter:blur(10px);opacity:0.85;pointer-events:none;z-index:0;
-    }
-    .service-card .inner{position:relative;z-index:2}
-    .service-card h4{margin:6px 0;color:#03102a;font-size:16px}
-    .service-card p{color:var(--muted);margin-bottom:6px;font-size:13px}
-    .service-card small{color:var(--muted);font-size:12px}
-    .service-card:hover{
-      box-shadow:0 22px 50px rgba(11,63,110,0.12), 0 8px 24px rgba(11,63,110,0.06);
-      border-color:rgba(11,111,191,0.10);
-    }
-
-    /* BLOG + contact */
-    .blogs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-    .blog-card{background:var(--card);padding:16px;border-radius:10px;border:1px solid rgba(3,16,42,0.03);box-shadow:0 8px 24px rgba(11,63,110,0.04)}
-    .blog-card:hover{box-shadow:0 18px 44px rgba(11,63,110,0.07)}
-
-    .contact-grid{grid-template-columns:1fr 380px;gap:16px}
-    form input,form textarea{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(3,16,42,0.04);background:transparent;color:#03102a;resize:vertical;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);font-size:14px}
-
-    footer{padding:28px 0;color:var(--muted);font-size:14px}
-
-    /* modal */
-    .modal{position:fixed;inset:0;background:rgba(3,16,42,0.45);display:flex;align-items:center;justify-content:center;padding:18px;visibility:hidden;opacity:0;transition:all .18s;z-index:40}
-    .modal.open{visibility:visible;opacity:1}
-    .modal-card{background:var(--card);padding:20px;border-radius:12px;max-width:760px;width:100%;border:1px solid rgba(3,16,42,0.04);box-shadow:var(--strong-shadow);}
-
-    /* small devices adjustments */
-    @media (max-width: 1100px){
-      .hero{grid-template-columns:1fr 360px}
-      .hero-slider{height:300px}
-      .container{padding:20px}
-      .slide .content{max-width:100%}
-    }
-
-    @media (max-width: 900px){
-      /* header: collapse nav to toggle */
-      .nav-links{display:none}
-      .nav-toggle{display:inline-flex}
-      header{padding:14px 0}
-      .hero{grid-template-columns:1fr;gap:18px;padding:36px 0}
-      .hero-card{order:2}
-      .hero-inner{order:1}
-      .hero-slider{height:260px}
-      .quick-stats{grid-template-columns:repeat(3,1fr)}
-      .contact-grid{grid-template-columns:1fr}
-      .container{padding:18px}
-      .modal-card{max-width:640px}
-    }
-
-    @media (max-width: 640px){
-      .brand h1{font-size:15px}
-      .logo{width:48px;height:48px}
-      .kicker{padding:6px 10px;font-size:12px}
-      h2{font-size:28px}
-      p.lead{font-size:14px}
-      .cta{gap:8px}
-      .hero-slider{height:200px}
-      .service-card{padding:14px;min-height:100px}
-      .service-card h4{font-size:15px}
-      .quick-stats{grid-template-columns:1fr;gap:10px}
-      .stat-mini .s-value{font-size:16px}
-      .modal-card{width:100%;height:100%;max-width:100%;border-radius:12px 12px 0 0;align-self:flex-end}
-      .modal{align-items:flex-end;padding:0}
-    }
-
-    /* --- ABOUT SECTION RESPONSIVE RULES --- */
-    .about-grid{
-      display:grid;
-      grid-template-columns: 1fr min(360px, 34%);
-      gap:22px;
-      align-items:start;
-    }
-    .about-aside{
-      background:var(--card);
-      padding:16px;
-      border-radius:12px;
-      border:1px solid rgba(3,16,42,0.03);
-      box-shadow:var(--soft-shadow);
-    }
-    @media (max-width: 900px){
-      .about-grid{grid-template-columns: 1fr; gap:14px}
-      .about-aside{padding:14px}
-    }
-    /* --- end about rules --- */
-
-    /* keyboard accessibility focus */
-    a:focus, button:focus, input:focus, textarea:focus {outline:3px solid rgba(11,111,191,0.12);outline-offset:2px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyroot Technologies | Future of Aerial Tech</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">SR</div>
-        <div>
-          <h1>SkyRoot Technologies</h1>
-          <div style="font-size:12px;color:var(--muted)">Registered 2025 • Professional drone surveys</div>
-        </div>
-      </div>
+    <header class="main-header">
+        <div class="container">
+            <!-- <div class="logo">
+                <a href="#">
+                    <h1>SKYROOT<span>TECH</span></h1>
+                </a>
+            </div> -->
+            <div class="logo">
+                <a href="#">
+                    <img src="./images/skyrootlogo.png" alt="Skyroot Technologies" class="logo-img">
+                </a>
+            </div>
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <div class="close-menu">
+                        <i class="fas fa-times"></i>
+                    </div>
 
-      <!-- nav links (desktop) -->
-      <nav>
-        <div class="nav-links" id="navLinks">
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#blog">Blog</a>
-          <a href="#contact">Contact</a>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </nav>
         </div>
-
-        <!-- mobile toggle -->
-        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open menu">
-          <!-- hamburger -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </nav>
     </header>
 
-    <!-- HERO -->
-    <section class="hero" id="home" aria-labelledby="homeTitle">
-      <div class="hero-inner">
-        <span class="kicker">Aerial Intelligence</span>
-        <h2 id="homeTitle">Transforming aerial data into instantly actionable insights</h2>
-        <p class="lead">Precision drone surveys, mapping and analytics across mining, agriculture, forestry, infrastructure, utilities and disaster risk management. Measured deliverables for decision-makers.</p>
+    <section class="hero">
 
-        <div class="cta">
-          <button class="btn btn-primary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Request a Quote</button>
-          <button class="btn btn-ghost" onclick="openServiceForm({dataset:{service:'General enquiry'}})">Contact Sales</button>
-        </div>
+        <div class="hero-overlay-grid"></div>
+        <div class="hero-glow"></div>
 
-        <!-- QUICK STATS (separate small section inside hero) -->
-        <div class="quick-stats" aria-hidden="false">
-          <div class="stat-mini" role="group" aria-label="Max pilot experience">
-            <div class="s-value">2 yrs</div>
-            <div class="s-label">Max pilot experience</div>
-          </div>
-          <div class="stat-mini" role="group" aria-label="Registered">
-            <div class="s-value">2025</div>
-            <div class="s-label">Company registered</div>
-          </div>
-          <div class="stat-mini" role="group" aria-label="Fast deliverables">
-            <div class="s-value">Fast</div>
-            <div class="s-label">Actionable deliverables</div>
-          </div>
-        </div>
-      </div>
+        <div class="container hero-container">
 
-      <aside class="hero-card" aria-hidden="true">
-        <div class="hero-slider" id="slider" aria-hidden="true">
-          <div class="slide" style="opacity:1">
-            <!-- slide image (subtle behind content) -->
-            <img class="slide-img" src="https://images.unsplash.com/photo-1508444845599-5c89863b1c44?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-            <div class="content">
-              <div class="tag">Smart Mapping</div>
-              <h3>Orthomosaic maps & terrain models</h3>
-              <p class="muted">High-resolution maps for surveying, planning and volumetrics.</p>
+            <div class="hero-content-layer">
+                <span class="pill-badge">BEYOND HORIZONS</span>
+                <h1 class="giant-text">SKY<br>ROOT</h1>
+                <p>Advanced Aerial Intelligence & Cinematography Solutions.</p>
+                <div class="hero-btns">
+                    <a href="./index.html#services" class="btn btn-primary">Discover</a>
+                    <a href="./contact.html" class="btn btn-outline">Connect</a>
+                </div>
             </div>
-          </div>
-          <div class="slide" style="opacity:0">
-            <img class="slide-img" src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1400&q=60" alt="">
-            <div class="content">
-              <div class="tag">Infrastructure</div>
-              <h3>Inspections for powerlines & plants</h3>
-              <p class="muted">Visual & thermal surveys with structured reports.</p>
+
+            <div class="hero-drone-layer" style="pointer-events: none;">
+                <img src="./images/djimavic.png" alt="Skyroot Drone" id="drone-hero">
             </div>
-          </div>
-          <div class="slider-dots" id="dots" aria-hidden="true"></div>
+
         </div>
-      </aside>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>SCROLL TO EXPLORE</span>
+        </div>
     </section>
 
-    <!-- SERVICES (8 primary) -->
-    <section id="services" aria-labelledby="servicesTitle">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px;flex-wrap:wrap">
-        <h3 id="servicesTitle">Services</h3>
-        <div class="muted">Click any service to request a quote — the form will auto-fill the selected service.</div>
-      </div>
-
-      <div class="grid services-grid" id="servicesGrid">
-        <div class="service-card" data-service="Mining surveys & volumetrics" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Mining surveys & volumetrics</h4>
-            <p class="muted">Pit mapping, stockpile volumetrics and orthomosaics.</p>
-            <small class="muted">Deliverables: DSM, contouring, PDF volume report, GeoTIFFs.</small>
-          </div>
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img">
+                    <img src="./images/drone.png" alt="Drone Technology">
+                    <div class="exp-badge2">
+                        <h3>15+</h3>
+                        <p>Years Exp.</p>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h4 class="sub-title">Who We Are</h4>
+                    <h2>Redefining Aerial Perspectives</h2>
+                    <p>We provide expert inspection services for your organization’s mission-critical assets using
+                        advanced drone technology. Our team creates stunning aerial visual content with precision and
+                        safety.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> 4K/8K Cinematic Video</li>
+                        <li><i class="fas fa-check-circle"></i> Thermal Inspection</li>
+                        <li><i class="fas fa-check-circle"></i> Real-time Data Mapping</li>
+                    </ul>
+                    <a href="./about.html" class="btn btn-dark">Read More</a>
+                </div>
+            </div>
         </div>
-
-        <div class="service-card" data-service="Agriculture & crop analytics" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Agriculture & crop analytics</h4>
-            <p class="muted">NDVI/NDRE flights and prescription maps.</p>
-            <small class="muted">Deliverables: vegetation indices, GeoTIFFs, prescription layers.</small>
-          </div>
-        </div>
-
-        <div class="service-card" data-service="Forestry mapping & biomass" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Forestry mapping & biomass</h4>
-            <p class="muted">Canopy height models and biomass estimation.</p>
-            <small class="muted">Deliverables: CHM, LAZ point-clouds, monitoring reports.</small>
-          </div>
-        </div>
-
-        <div class="service-card" data-service="Disaster risk & damage assessment" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Disaster risk & damage assessment</h4>
-            <p class="muted">Rapid assessment and change detection for response teams.</p>
-            <small class="muted">Deliverables: rapid maps, change layers, priority PDF brief.</small>
-          </div>
-        </div>
-
-        <div class="service-card" data-service="Railways, metros & highways" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Railways, metros & highways</h4>
-            <p class="muted">Corridor mapping and clearance checks.</p>
-            <small class="muted">Deliverables: corridor orthomosaic, cross-sections, CAD outputs.</small>
-          </div>
-        </div>
-
-        <div class="service-card" data-service="Powerlines & utilities inspections" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Powerlines & utilities inspections</h4>
-            <p class="muted">Visual & thermal inspections with geotagged findings.</p>
-            <small class="muted">Deliverables: inspection photos, anomaly report, asset CSV.</small>
-          </div>
-        </div>
-
-        <div class="service-card" data-service="Water resource & irrigation surveys" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Water resource & irrigation surveys</h4>
-            <p class="muted">Reservoir surveys and volumetrics.</p>
-            <small class="muted">Deliverables: reservoir maps, volumetrics, hydrology brief.</small>
-          </div>
-        </div>
-
-        <div class="service-card" data-service="Urban planning & construction monitoring" onclick="openServiceForm(this)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') openServiceForm(this)">
-          <div class="inner">
-            <h4>Urban planning & construction monitoring</h4>
-            <p class="muted">Topographic surveys and progress monitoring.</p>
-            <small class="muted">Deliverables: topo maps, progress orthomosaics, PDF reports.</small>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about" aria-labelledby="aboutTitle">
-      <h3 id="aboutTitle">About SkyRoot Technologies</h3>
-
-      <!-- responsive about grid -->
-      <div class="about-grid">
-        <div>
-          <p class="muted">Founded and registered in 2025, SkyRoot Technologies is focused on delivering action-ready aerial data — orthomosaics, DSM/DTMs, point clouds and analytical reports. Our pilots and analysts prioritize safety, quality and fast turn-around.</p>
-          <ul class="muted">
-            <li>Actionable deliverables & clear PDF summaries</li>
-            <li>Domain knowledge across mining, agriculture, utilities and infrastructure</li>
-            <li>Flight planning, ground control and calibrated processing where required</li>
-          </ul>
+    <section class="quality-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h4 class="sub-title">We're about Quality and Trust</h4>
+                <h2>How It Works</h2>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon-box"><i class="fas fa-battery-full"></i></div>
+                    <h3>Extended Battery Life</h3>
+                    <p>Using the latest Li-Po technology for extended flight sessions and maximum efficiency.</p>
+                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><i class="fas fa-gamepad"></i></div>
+                    <h3>Precision Control</h3>
+                    <p>Mastering complex flight paths to capture cinematic footage and navigate difficult terrain.</p>
+                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><i class="fas fa-plane-departure"></i></div>
+                    <h3>Safe Flight Ops</h3>
+                    <p>Strict adherence to aviation safety protocols and pre-flight checklists.</p>
+                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
-
-        <aside class="about-aside" aria-label="Company at a glance">
-          <h4>Company at a glance</h4>
-          <p class="muted">Registered: <strong>2025</strong><br>Max pilot experience: <strong>2 years</strong><br>Deliverables: Orthomosaic, DSM/DTM, Point-clouds, NDVI, Reports</p>
-        </aside>
-      </div>
     </section>
 
-    <!-- BLOG -->
-    <section id="blog" aria-labelledby="blogTitle">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px">
-        <h3 id="blogTitle">Latest from our blog</h3>
-        <div class="muted">Insights, case studies and how-tos</div>
-      </div>
-      <div class="blogs">
-        <article class="blog-card">
-          <h4>The Benefits of Drone-Based Surveys</h4>
-          <p class="muted">Practical walk-through of a pit mapping workflow and how we cut measurement time.</p>
-        </article>
-        <article class="blog-card">
-          <h4>NDVI explained for smallholders</h4>
-          <p class="muted">Simple explanation of vegetation indices and why they matter for yield improvement.</p>
-        </article>
-      </div>
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h4 class="sub-title">Capabilities</h4>
+                <h2>Our Services</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1517089152318-42ec560349c0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Events">
+                    </div>
+                    <div class="service-info">
+                        <h3>Mining Surveys & Volumetrics</h3>
+                        <p>High-precision pit mapping, stockpile volume calculations, and lease boundary monitoring
+                            using photogrammetry.</p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                            alt="Survey">
+                    </div>
+                    <div class="service-info">
+                        <h3>Aerial Survey</h3>
+                        <p>Land mapping solutions delivering accuracy for engineering,
+                            cadastral verification, and infrastructure planning using RTK/PPK technology.</p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://plus.unsplash.com/premium_photo-1730035378219-64c8c3162144?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Cinema">
+                    </div>
+                    <div class="service-info">
+                        <h3>Agricultural Analytics</h3>
+                        <p>Multispectral imaging for crop health assessment, irrigation planning, and yield estimation.
+                        </p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Safety">
+                    </div>
+                    <div class="service-info">
+                        <h3>Forestry mapping & Biomass</h3>
+                        <p>Detailed vegetation analysis, canopy height modeling, and deforestation monitoring for
+                            environmental compliance.</p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://plus.unsplash.com/premium_photo-1668451910499-923d98b3fb2e?q=80&w=1008&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Delivery Services">
+                    </div>
+                    <div class="service-info">
+                        <h3>Railway, Metros & Highways</h3>
+                        <p>Linear infrastructure mapping for right-of-way (ROW) acquisition, construction progress, and
+                            maintenance. </p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="360 VR Services">
+                    </div>
+                    <div class="service-info">
+                        <h3>Powerlines & Utilities Inspection</h3>
+                        <p>Automated visual and thermal inspection of transmission towers and solar farms to detect
+                            faults and hotspots.</p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1581922819877-5e3430c846ec?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Safety">
+                    </div>
+                    <div class="service-info">
+                        <h3>Water Resource & Irrigation Surveys</h3>
+                        <p>Hydrographic estimation, reservoir capacity planning, and watershed management surveys.</p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://plus.unsplash.com/premium_photo-1661824784454-ed42a4f906ed?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Delivery Services">
+                    </div>
+                    <div class="service-info">
+                        <h3>Urban Planning & Construction Monitoring</h3>
+                        <p>Topographic surveys for land development, smart city planning, and construction site progress
+                            monitoring.</p>
+                        <a href="./contact.html" class="btn-link">Enquiry</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" aria-labelledby="contactTitle">
-      <h3 id="contactTitle">Contact</h3>
-      <div class="grid contact-grid" style="gap:16px">
-        <form onsubmit="event.preventDefault(); alert('Thanks! We will reach out.')" style="background:var(--card);padding:16px;border-radius:12px;border:1px solid rgba(3,16,42,0.03);box-shadow:var(--soft-shadow)">
-          <input placeholder="Name" required />
-          <input placeholder="Email" type="email" required style="margin-top:10px" />
-          <input placeholder="Organization / Project" style="margin-top:10px" />
-          <textarea placeholder="Tell us about your site, goals and timeline" rows="6" style="margin-top:10px"></textarea>
-          <button class="btn btn-primary" type="submit" style="margin-top:12px">Send enquiry</button>
-        </form>
+    <section class="careers-section">
+        <div class="hero-overlay-grid" style="opacity: 0.05; transform: none; animation: none;"></div>
 
-        <aside class="about-aside">
-          <h4>Reach us</h4>
-          <p class="muted">Email: hello@skyroottechnologies.com<br>Phone: +91 9XXXXXXXXX<br>Location: India (operations across sectors)</p>
-        </aside>
-      </div>
+        <div class="container text-center" style="position: relative; z-index: 2;">
+            <h4 class="sub-title">Join the Fleet</h4>
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 20px;">Build the Future with Skyroot</h2>
+            <p style="color: #888; max-width: 600px; margin: 0 auto 30px; font-size: 1.1rem;">
+                We are constantly looking for talented drone pilots, data engineers, and creative visionaries.
+                If you have the passion to innovate, we want to hear from you.
+            </p>
+
+            <a href="mailto:skyroottechnologies@gmail.com?subject=Job Application - [Your Name]"
+                class="btn btn-primary">
+                <i class="fas fa-paper-plane" style="margin-right: 10px;"></i> Send Your CV
+            </a>
+
+            <p style="margin-top: 15px; font-size: 0.85rem; color: #555;">
+                Currently accepting applications via email only.
+            </p>
+        </div>
     </section>
 
-    <footer>
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <div>© <strong>SkyRoot Technologies</strong> 2025 — All rights reserved</div>
-        <div class="muted">Built with focus on fast delivery and clear reporting</div>
-      </div>
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-widget" style="display: flex; align-items: center;">
+                    <img src="./images/skyrootlogo.png" alt="Skyroot Technologies" class="footer-logo">
+                </div>
+                <div class="footer-widget">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="./index.html#services">Services</a></li>
+                        <li><a href="./index.html#team">Our Team</a></li>
+                        <li><a href="./contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-widget">
+                    <h3>Contact Details</h3>
+                    <p style="margin-top: 20px;">Elevating your vision with cutting-edge drone technology.</p>
+                    <div class="contact-details">
+                        <p><i class="fas fa-map-marker-alt"></i> 45 Parkhill, Satellite, Ahmedabad.</p>
+                        <p><i class="fas fa-envelope"></i> skyroottechnologies@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +91 8460072597</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Skyroot Technologies. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
-  </div>
 
-  <!-- Modal -->
-  <div id="modal" class="modal" onclick="if(event.target===this) closeModal()" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-card" role="document">
-      <div id="modalContent"></div>
-      <!-- <div style="margin-top:14px;text-align:right"><button class="btn btn-ghost" onclick="closeModal()">Close</button></div> -->
-    </div>
-  </div>
-
-  <script>
-    /* HERO SLIDER (images inside slides) */
-    const slides = Array.from(document.querySelectorAll('#slider .slide'));
-    const dotsWrap = document.getElementById('dots');
-    let idx = 0;
-    if (slides.length) {
-      slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot';d.addEventListener('click', ()=>go(i));dotsWrap.appendChild(d)});
-      updateDots();
-      function go(i){slides[idx].style.opacity=0; idx=i; slides[idx].style.opacity=1; updateDots();}
-      function updateDots(){Array.from(dotsWrap.children).forEach((c,i)=>c.className='dot'+(i===idx?' active':''))}
-      setInterval(()=>{slides[idx].style.opacity=0; idx=(idx+1)%slides.length; slides[idx].style.opacity=1; updateDots()},5000);
-    }
-
-    /* NAV TOGGLE (mobile) */
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-    navToggle && navToggle.addEventListener('click', ()=>{
-      const open = navLinks.style.display === 'flex';
-      navLinks.style.display = open ? 'none' : 'flex';
-      navLinks.style.flexDirection = 'column';
-      navLinks.style.position = 'absolute';
-      navLinks.style.right = '20px';
-      navLinks.style.top = '68px';
-      navLinks.style.background = 'white';
-      navLinks.style.padding = '12px';
-      navLinks.style.borderRadius = '10px';
-      navLinks.style.boxShadow = '0 12px 36px rgba(3,16,42,0.08)';
-      navToggle.setAttribute('aria-expanded', String(!open));
-    });
-    navLinks && navLinks.addEventListener('click', (e)=>{ if(e.target.tagName==='A' && window.innerWidth < 900) { navLinks.style.display='none'; navToggle.setAttribute('aria-expanded','false'); }});
-
-    /* modal + form autofill */
-    function openServiceForm(el){
-      const service = el && el.dataset && el.dataset.service ? el.dataset.service : (typeof el === 'string' ? el : (el && el.dataset ? el.dataset.service : 'General enquiry'));
-      const modal = document.getElementById('modal');
-      const content = document.getElementById('modalContent');
-      content.innerHTML = `
-        <h3>Request quote — <span style="color:var(--accent-1)">${service}</span></h3>
-        <form id="serviceRequestForm">
-          <label style="display:block;margin-top:10px;color:var(--muted)">Service</label>
-          <input name="service" value="${service}" readonly style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(3,16,42,0.04);" />
-
-          <label style="display:block;margin-top:10px;color:var(--muted)">Name</label>
-          <input name="name" placeholder="Your name" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(3,16,42,0.04);" />
-
-          <label style="display:block;margin-top:10px;color:var(--muted)">Email</label>
-          <input name="email" type="email" placeholder="you@company.com" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(3,16,42,0.04);" />
-
-          <label style="display:block;margin-top:10px;color:var(--muted)">Project / Site details</label>
-          <textarea name="details" rows="4" placeholder="Brief site description, area, timeline..." style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(3,16,42,0.04);"></textarea>
-
-          <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-            <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-            <button type="submit" class="btn btn-primary">Send request</button>
-          </div>
-        </form>
-      `;
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden','false');
-
-      // attach submit handler
-      const f = document.getElementById('serviceRequestForm');
-      f.addEventListener('submit', function(e){
-        e.preventDefault();
-        const data = {
-          service: f.service.value,
-          name: f.name.value,
-          email: f.email.value,
-          details: f.details.value
-        };
-        // TODO: Replace below with an actual API call (fetch) to your backend
-        console.log('Service request submitted', data);
-        alert('Thanks — request sent for: '+data.service+' (we will contact '+data.email+')');
-        closeModal();
-      });
-
-      // focus first input
-      setTimeout(()=>{document.querySelector('#serviceRequestForm input[name="name"]').focus()},120);
-    }
-
-    function closeModal(){
-      const modal = document.getElementById('modal');
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden','true');
-      const content = document.getElementById('modalContent');
-      content.innerHTML = '';
-    }
-
-    // close modal with Escape
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape') closeModal();
-    });
-
-    // safe-load flag (used if you add entrance animations later)
-    window.addEventListener('load', ()=>{document.body.classList.add('loaded')});
-  </script>
+    <script src="script.js"></script>
 </body>
+
 </html>

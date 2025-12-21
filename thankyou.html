@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Received | Skyroot Technologies</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="main-header" style="background: black;">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="./images/skyrootlogo.png" alt="Skyroot Technologies" class="logo-img">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="thankyou-section">
+        <div class="thankyou-container">
+
+            <div class="success-icon">
+                <div class="pulse-ring"></div>
+                <i class="fas fa-check"></i>
+            </div>
+
+            <h1 class="giant-text-small" style="font-size: 3rem;">TRANSMISSION<br>RECEIVED</h1>
+            <p class="status-msg">Your aerial mission data has been logged.</p>
+            <p class="sub-msg">Our operations team will contact you shortly.</p>
+
+            <div class="redirect-box">
+                <p>Returning to base in <span id="countdown">5</span> seconds...</p>
+                <div class="loader-line"></div>
+            </div>
+
+            <a href="index.html" class="btn btn-outline" style="margin-top: 20px;">Return Immediately</a>
+        </div>
+    </section>
+
+    <footer class="footer" style="padding-top: 30px;">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2025 Skyroot Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Redirect Logic
+        let timeLeft = 5;
+        const countdownElem = document.getElementById('countdown');
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownElem.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = "index.html"; // Redirects to Home
+            }
+        }, 1000); // Update every 1 second
+    </script>
+
+</body>
+
+</html>
